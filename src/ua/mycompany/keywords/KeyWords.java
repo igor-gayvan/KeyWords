@@ -5,6 +5,7 @@
  */
 package ua.mycompany.keywords;
 
+import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,31 +25,63 @@ public class KeyWords {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<Author> listAuthors1 = new LinkedList<>();
+        List<Author> authors1 = new LinkedList<>();
 
-        listAuthors1.add(new Author("FirstName_Author1", "SurName_Author1"));
-        listAuthors1.add(new Author("FirstName_Author2", "SurName_Author2"));
+        authors1.add(new Author("FirstName_Author1", "SurName_Author1"));
+        authors1.add(new Author("FirstName_Author2", "SurName_Author2"));
 
-        List<Author> listAuthors2 = new LinkedList<>();
-        listAuthors2.add(new Author("FirstName_Author3", "SurName_Author3"));
+        List<Author> authors2 = new LinkedList<>();
+        authors2.add(new Author("FirstName_Author3", "SurName_Author3"));
 
-        List<WikiArticle> listWikiArticles = new LinkedList<>();
+        List<WikiArticle> wikiArticles = new LinkedList<>();
 
-        listWikiArticles.add(new WikiArticle("https://1", "title_WikiArticle_1", "text_WikiArticle_1"));
-        listWikiArticles.add(new WikiArticle("https://2", "title_WikiArticle_2", "text_WikiArticle_2"));
+        wikiArticles.add(new WikiArticle("https://1", "title_WikiArticle_1", "text_WikiArticle_1"));
+        wikiArticles.add(new WikiArticle("https://2", "title_WikiArticle_2", "text_WikiArticle_2"));
 
-        List<BookDescription> listBookDescriptions = new LinkedList<>();
+        List<BookDescription> bookDescriptions = new LinkedList<>();
 
-        listBookDescriptions.add(new BookDescription(listAuthors1, "publisher1", "annotation1", "title1", "text1"));
-        listBookDescriptions.add(new BookDescription(listAuthors2, "publisher2", "annotation2", "title2", "text2"));
+        bookDescriptions.add(new BookDescription(authors1, "publisher1", "annotation1", "title1", "text1"));
+        bookDescriptions.add(new BookDescription(authors2, "publisher2", "annotation2", "title2", "text2"));
 
-        List<Article> listArticles = new LinkedList<>();
-        listArticles.add(new Article(listAuthors1, "journalName1", 1999, 1, "title4", "text4"));
-        listArticles.add(new Article(listAuthors2, "journalName1", 2016, 4, "title5", "text6"));
-        listArticles.add(new Article(listAuthors2, "journalName2", 2000, 2, "title6", "text7"));
+        List<Article> articles = new LinkedList<>();
+        articles.add(new Article(authors1, "journalName1", 1999, 1, "title4", "text4"));
+        articles.add(new Article(authors2, "journalName1", 2016, 4, "title5", "text6"));
+        articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "text7"));
+        articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "keyword"));        
 
-        Set<String> setKeyWords = new HashSet<>();
-        
-        
+        Set<String> keyWords = new HashSet<>();
+        keyWords.add("keyword");
+
+        int cntObject = 0;
+
+        for (Article article : articles) {
+            if (containsKeyWord(keyWords, article.getText()) | containsKeyWord(keyWords, article.getTitle())) {
+                cntObject++;
+            }
+        }
+
+        for (BookDescription bookDescription : bookDescriptions) {
+            if (containsKeyWord(keyWords, bookDescription.getText()) | containsKeyWord(keyWords, bookDescription.getTitle())) {
+                cntObject++;
+            }
+        }
+
+        for (WikiArticle wikiArticle : wikiArticles) {
+            if (containsKeyWord(keyWords, wikiArticle.getText()) | containsKeyWord(keyWords, wikiArticle.getTitle())) {
+                cntObject++;
+            }
+        }
+
+        System.out.printf("%d objects contains given key words in titles and/or texts\n", cntObject);
+    }
+
+    private static boolean containsKeyWord(Set<String> keyWords, String sentence) {
+        for (String keyWord : keyWords) {
+            if (sentence.contains(keyWord)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
