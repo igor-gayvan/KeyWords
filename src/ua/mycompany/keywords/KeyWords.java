@@ -5,7 +5,7 @@
  */
 package ua.mycompany.keywords;
 
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.Set;
 import ua.mycompany.keywords.entity.Article;
 import ua.mycompany.keywords.entity.Author;
 import ua.mycompany.keywords.entity.BookDescription;
+import ua.mycompany.keywords.entity.PrintedText;
 import ua.mycompany.keywords.entity.WikiArticle;
 
 /**
@@ -25,49 +26,45 @@ public class KeyWords {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<Author> authors1 = new LinkedList<>();
+        List<Author> authors1 = new ArrayList<>();
 
         authors1.add(new Author("FirstName_Author1", "SurName_Author1"));
         authors1.add(new Author("FirstName_Author2", "SurName_Author2"));
 
-        List<Author> authors2 = new LinkedList<>();
+        List<Author> authors2 = new ArrayList<>();
         authors2.add(new Author("FirstName_Author3", "SurName_Author3"));
 
-        List<WikiArticle> wikiArticles = new LinkedList<>();
+        List<WikiArticle> wikiArticles = new ArrayList<>();
 
         wikiArticles.add(new WikiArticle("https://1", "title_WikiArticle_1", "text_WikiArticle_1"));
         wikiArticles.add(new WikiArticle("https://2", "title_WikiArticle_2", "text_WikiArticle_2"));
 
-        List<BookDescription> bookDescriptions = new LinkedList<>();
+        List<BookDescription> bookDescriptions = new ArrayList<>();
 
         bookDescriptions.add(new BookDescription(authors1, "publisher1", "annotation1", "title1", "text1"));
         bookDescriptions.add(new BookDescription(authors2, "publisher2", "annotation2", "title2", "text2"));
 
-        List<Article> articles = new LinkedList<>();
+        List<Article> articles = new ArrayList<>();
         articles.add(new Article(authors1, "journalName1", 1999, 1, "title4", "text4"));
         articles.add(new Article(authors2, "journalName1", 2016, 4, "title5", "text6"));
         articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "text7"));
-        articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "keyword"));        
+        articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "key"));
+        articles.add(new Article(authors2, "journalName2", 2000, 2, "title6", "word"));
 
         Set<String> keyWords = new HashSet<>();
-        keyWords.add("keyword");
+        keyWords.add("key");
+        keyWords.add("word");
 
         int cntObject = 0;
 
-        for (Article article : articles) {
-            if (containsKeyWord(keyWords, article.getText()) | containsKeyWord(keyWords, article.getTitle())) {
-                cntObject++;
-            }
-        }
+        List<PrintedText> printedTexts = new LinkedList<>();
 
-        for (BookDescription bookDescription : bookDescriptions) {
-            if (containsKeyWord(keyWords, bookDescription.getText()) | containsKeyWord(keyWords, bookDescription.getTitle())) {
-                cntObject++;
-            }
-        }
+        printedTexts.addAll(articles);
+        printedTexts.addAll(bookDescriptions);
+        printedTexts.addAll(wikiArticles);
 
-        for (WikiArticle wikiArticle : wikiArticles) {
-            if (containsKeyWord(keyWords, wikiArticle.getText()) | containsKeyWord(keyWords, wikiArticle.getTitle())) {
+        for (PrintedText printedText : printedTexts) {
+            if (containsKeyWord(keyWords, printedText.getText()) | containsKeyWord(keyWords, printedText.getTitle())) {
                 cntObject++;
             }
         }
