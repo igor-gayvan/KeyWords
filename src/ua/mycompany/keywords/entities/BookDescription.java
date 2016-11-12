@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.mycompany.keywords.entity;
+package ua.mycompany.keywords.entities;
 
 import java.util.List;
 
